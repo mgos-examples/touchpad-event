@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/mike/mgos/deps/**",
+                "/home/mike/github/mongoose-os/**",
+                "/home/mike/github/esp-idf/components/**"
+            ],
+            "defines": [],
+            "compilerPath": "/home/linuxbrew/.linuxbrew/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
