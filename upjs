@@ -1,0 +1,1 @@
+mos --port "http://tpadevt.lan/rpc" put fs/init.js

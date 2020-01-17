@@ -1,13 +1,24 @@
 
 #include "mgos.h"
 #include "driver/touch_pad.h"
-//#include "esp32_touchpad.h"
 #include "mgos_system.h"
 #include "mgos_time.h"
+#include "mgos_event.h"
 
-static uint16_t poll_interval = 200;         //ms
+/* data structure */
+static uint16_t poll_interval = 200;        //ms
 static uint16_t long_touch_duration = 3000; //ms
 static int64_t last_touch_event = 0;
+
+// lazy way of creating events, though it is more elegant to pass the touchpad number via evdata
+#define TPAD_EVT_BASE MGOS_EVENT_BASE('T', 'P', 'E')
+enum tpad_event
+{
+  TOUCH9 = TPAD_EVT_BASE,
+  LONG_TOUCH9,
+  UNTOUCH9
+  /* add TOUCH8 ...etc for additional used pins */
+};
 
 static void poll_touchpad_cb(void *arg)
 {
@@ -17,7 +28,6 @@ static void poll_touchpad_cb(void *arg)
   static bool touch_emitted = false;
   static bool long_touch_emitted = false;
 
-  //touch_value = esp32_touch_pad_read(9);
   touch_pad_read(TOUCH_PAD_NUM9, &touch_value);
   LOG(LL_DEBUG, ("[%4d]", touch_value));
 
@@ -33,7 +43,7 @@ static void poll_touchpad_cb(void *arg)
       {
         long_touch_emitted = true;
         LOG(LL_INFO, ("emit looooong touch event"));
-        // emit code here ...
+        mgos_event_trigger(LONG_TOUCH9, NULL);
         last_touch_event = mgos_uptime_micros();
       }
     }
@@ -44,7 +54,8 @@ static void poll_touchpad_cb(void *arg)
       {
         touch_emitted = true;
         LOG(LL_INFO, ("emit touch event"));
-        // emit code here ...
+        mgos_event_trigger(TOUCH9, NULL);
+        last_touch_event = mgos_uptime_micros();
       }
     }
   }
@@ -54,6 +65,7 @@ static void poll_touchpad_cb(void *arg)
     if (touched)
     { // release
       LOG(LL_INFO, ("released"));
+      mgos_event_trigger(UNTOUCH9, NULL);
       touched = false;
       touch_duration = 0;
       touch_emitted = false;
@@ -77,6 +89,7 @@ enum mgos_app_init_result mgos_app_init(void)
   touch_pad_set_voltage(TOUCH_HVOLT_2V7, TOUCH_LVOLT_0V5, TOUCH_HVOLT_ATTEN_1V);
   touch_pad_config(TOUCH_PAD_NUM9, 0);
 
+  mgos_event_register_base(TPAD_EVT_BASE, "touchpad module");
   mgos_set_timer(poll_interval, MGOS_TIMER_REPEAT, poll_touchpad_cb, NULL);
 
   return MGOS_APP_INIT_SUCCESS;
