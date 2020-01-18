@@ -15,7 +15,8 @@ let online = false;                               // Connected to the cloud?
 let TpadEvent = {
   TOUCH9: Event.baseNumber('TPE'),  // 'TPE' match 'TPAD_EVT_BASE' in main.c
   LONG_TOUCH9: Event.baseNumber('TPE') + 1,
-  UNTOUCH9: Event.baseNumber('TPE') + 2
+  UNTOUCH9: Event.baseNumber('TPE') + 2,
+  DOUBLE_TOUCH9: Event.baseNumber('TPE') + 3,
 };
 
 let setLED = function(on) {
@@ -49,4 +50,8 @@ Event.addHandler(TpadEvent.LONG_TOUCH9, function(ev, evdata, ud) {
 
 Event.addHandler(TpadEvent.UNTOUCH9, function(ev, evdata, ud) {
   Log.print(Log.INFO, 'handling UNTOUCH9');
+}, null );
+
+Event.addHandler(TpadEvent.DOUBLE_TOUCH9, function(ev, evdata, ud) {
+  Log.print(Log.INFO, 'handling DOUBLE_TOUCH9');
 }, null );
