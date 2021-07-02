@@ -1,8 +1,8 @@
 author: Michael Fung
 description: example for touchpad event handling in mJS
 # arch: PLATFORM
-version: 20200117r1
-manifest_version: 2017-05-18
+version: 20210702r1
+manifest_version: 2017-09-29
 libs_version: ${mos.version}
 modules_version: ${mos.version}
 mongoose_os_version: ${mos.version}
@@ -18,29 +18,27 @@ filesystem:
   - fs
 
 libs:
-  - origin: https://github.com/mongoose-os-libs/boards
-  - origin: https://github.com/mongoose-os-libs/js-demo-bundle
-  - origin: https://github.com/mongoose-os-libs/wifi
-  - origin: https://github.com/mongoose-os-libs/http-server
-  - origin: https://github.com/mongoose-os-libs/rpc-loopback
-  - origin: https://github.com/mongoose-os-libs/rpc-service-config
-  - origin: https://github.com/mongoose-os-libs/rpc-service-fs
-  - origin: https://github.com/mongoose-os-libs/rpc-uart
-  - origin: https://github.com/mongoose-os-libs/ota-http-server
-  - origin: https://github.com/mongoose-os-libs/esp32-touchpad
-  - origin: https://github.com/mongoose-os-libs/mjs
+  - location: https://github.com/mongoose-os-libs/boards
+  - location: https://github.com/mongoose-os-libs/js-demo-bundle
+  - location: https://github.com/mongoose-os-libs/wifi
+  - location: https://github.com/mongoose-os-libs/http-server
+  - location: https://github.com/mongoose-os-libs/rpc-loopback
+  - location: https://github.com/mongoose-os-libs/rpc-service-config
+  - location: https://github.com/mongoose-os-libs/rpc-service-fs
+  - location: https://github.com/mongoose-os-libs/rpc-uart
+  - location: https://github.com/mongoose-os-libs/ota-http-server
+  - location: https://github.com/mongoose-os-libs/esp32-touchpad
+  - location: https://github.com/mongoose-os-libs/mjs
 
 config_schema:
   - ["device.id", "tpadevt"]
-  
+
   - ["board.led1.pin", 2]
   - ["board.led1.active_high", false]
 
   - ["wifi.ap.enable", false]
-  - ["wifi.ap.keep_enabled", false]  
+  - ["wifi.ap.keep_enabled", false]
   - ["wifi.sta.enable", true]
-  
+
   - ["sntp.server", "192.168.0.254"]
-  - ["debug.udp_log_addr", "192.168.0.1:514"]  
-
-
+  - ["debug.udp_log_addr", "192.168.0.1:514"]
